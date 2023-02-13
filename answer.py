@@ -32,7 +32,7 @@ def getValidSum(nums: List[int]) -> int:
 
 
 def main():
-    file: str = input("Filename: ")
+    file: str = input()
     text: str = openFile(file)
     nums: List[int] = convertToList(text)
     ret = getValidSum(nums)
