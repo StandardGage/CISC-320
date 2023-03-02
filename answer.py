@@ -60,7 +60,7 @@ def setScore(studentID: int, score: int):
 
 
 def sortStudents():
-    for student in students.keys():
+    for student in list(students):
         lowestPageID = students[student]['lowestPageID']
         totalScore = students[student]['totalScore']
         scoresSumbitted = students[student]['scoresSubmitted']
