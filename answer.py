@@ -14,7 +14,7 @@ def parseText(text: str):
     text = text.split('\n')
     for i in range(1, len(text)):
         text[i] = text[i].split(' ')
-    return text[1:]
+    return text[1:int(text[0])+1]
 
 
 def fillStudents(data: str):
@@ -74,6 +74,7 @@ def main():
     if not text:
         return
     text = parseText(text)
+    print(text)
     fillStudents(text)
     printStudents()
 
