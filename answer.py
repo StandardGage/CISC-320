@@ -27,7 +27,7 @@ def fillStudents(data: str):
         actionCode = log[1]
         if not studentID in students:
             students[studentID] = {'lowestPageID': None,
-                                   'latestPageID': None, 'totalScore': 0, 'scoresSubmitted': 0}
+                                   'latestPageID': None, 'totalScore': 0, 'scoresSubmitted': 0, 'averageScore': 0}
         match actionCode:
             case 'P':
                 actionCode == 'P'
