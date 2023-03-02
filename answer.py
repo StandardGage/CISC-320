@@ -49,10 +49,6 @@ def setLowestPageID(studentID: int, pageID: int):
 
 
 def setLatestPageID(studentID: int, pageID: int):
-    if students[studentID]['latestPageID']:
-        if pageID > students[studentID]['latestPageID']:
-            students[studentID]['latestPageID'] = pageID
-        return
     students[studentID]['latestPageID'] = pageID
 
 
