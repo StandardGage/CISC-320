@@ -12,9 +12,9 @@ def openFile(filename: str) -> str:
 
 def parseText(text: str):
     text = text.split('\n')
-    for i in range(len(text)):
+    for i in range(1, len(text)):
         text[i] = text[i].split(' ')
-    return text
+    return text[1:]
 
 
 def fillStudents(data: str):
@@ -69,8 +69,10 @@ def printStudents():
 
 
 def main():
-    file: str = input()
+    file: str = 'test.txt'
     text: str = openFile(file)
+    if not text:
+        return
     text = parseText(text)
     fillStudents(text)
     printStudents()
