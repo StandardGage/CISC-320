@@ -1,10 +1,10 @@
-# What does this program do?\*\*
+# What does this program do?
 
 This program is meant to calculate, sort, and report maximum, most recent, and average of a sequence of logs. More specifically it performs these actions on students data. The data is made up of logs containing information on student's page openings, submission scores, as well as body temperature scores.
 
 The program takes the name of a file as its input. This file is meant to be the data or logs that the program will work with.
 
-# How does the program work?\*\*
+# How does the program work?
 
 ## Parsing logs and Filling students
 
@@ -31,4 +31,4 @@ To find the algorithmic runtime of this problem we must look at the complexity o
 
 ## Conclusion
 
-Overall, the time complexity of the main function is dominated by the **sortStudents** function, which has a time complexity of O(n log n) where n is the number of students.It is also important that each log is gone through at a complexity of O(n) where n is the number of logs. Therefore, the overall time complexity of the code is O(s*log*s + L), where s is the number of students and L is the number of logs.
+Overall, the time complexity of the main function is dominated by the **sortStudents** function, which has a time complexity of O(n log n) where n is the number of students. It is also important that each log is gone through at a complexity of O(n) where n is the number of logs. Therefore, the overall time complexity of the code is O(s*log*s + L), where s is the number of students and L is the number of logs.
