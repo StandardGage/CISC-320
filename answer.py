@@ -69,7 +69,7 @@ def printStudents():
 
 
 def main():
-    file: str = 'test.txt'
+    file: str = input()
     text: str = openFile(file)
     if not text:
         return
