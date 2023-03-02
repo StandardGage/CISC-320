@@ -10,7 +10,7 @@ def openFile(filename: str) -> str:
         return text
 
 
-def parseText(text: str):
+def parseLogs(text: str):
     if not text:
         return ''
     text = text.split('\n')
@@ -27,7 +27,7 @@ def fillStudents(data: str):
         actionCode = log[1]
         if not studentID in students:
             students[studentID] = {'lowestPageID': None,
-                                   'latestPageID': None, 'totalScore': 0, 'scoresSubmitted': None}
+                                   'latestPageID': None, 'totalScore': 0, 'scoresSubmitted': 0}
         match actionCode:
             case 'P':
                 actionCode == 'P'
@@ -63,27 +63,35 @@ def setScore(studentID: int, score: int):
     students[studentID]['scoresSubmitted'] += 1
 
 
-def printStudents():
-    sortedStudents = list(students.keys())
-    sortedStudents.sort(reverse=True)
-    for student in sortedStudents:
+def sortStudents():
+    for student in students.keys():
         lowestPageID = students[student]['lowestPageID']
-        latestPageID = students[student]['latestPageID']
         totalScore = students[student]['totalScore']
         scoresSumbitted = students[student]['scoresSubmitted']
         if not (scoresSumbitted and lowestPageID):
+            students.pop(student)
             continue
-        averageScore = int(totalScore / scoresSumbitted)
+        students[student]['averageScore'] = int(totalScore / scoresSumbitted)
+    sortedStudents = sorted(students, key=lambda student: (students[student]['lowestPageID'], students[student]['latestPageID'],
+                                                           students[student]['averageScore']))
+    return sortedStudents
 
-        print(f"{student} {lowestPageID} {latestPageID} {averageScore}")
+
+def printStudents(sortedStudents: List[int]):
+    for student in sortedStudents:
+        lowestPageID = students[student]['lowestPageID']
+        latestPageID = students[student]['latestPageID']
+        averageScore = students[student]['averageScore']
+        print(f'{student} {lowestPageID} {latestPageID} {averageScore}')
 
 
 def main():
     file: str = input()
     text: str = openFile(file)
-    text = parseText(text)
-    fillStudents(text)
-    printStudents()
+    logs: str = parseLogs(text)
+    fillStudents(logs)
+    sortedStudents = sortStudents()
+    printStudents(sortedStudents)
 
 
 if __name__ == "__main__":
