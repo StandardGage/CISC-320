@@ -42,7 +42,7 @@ def fillStudents(data: str):
 def setLowestPageID(studentID: int, pageID: str):
     if students[studentID]['lowestPageID']:
         if pageID < students[studentID]['lowestPageID']:
-            students[studentID['lowestPageID']] = pageID
+            students[studentID]['lowestPageID'] = pageID
         return
     students[studentID]['lowestPageID'] = pageID
 
