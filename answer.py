@@ -1,30 +1,40 @@
 
 from typing import List
 
-students: dict[int, dict] = {}
-
 
 def openFile(filename: str) -> str:
+    """Opens a file and returns its contents as a string of text"""
     with open(filename, 'r') as file:
         text = file.read()
         return text
 
 
-def parseLogs(text: str):
+def parseLogs(text: str) -> str:
+    """Parse the logs from a given string of text"""
     if not text:
+        # return an empty string if text is empty
         return ''
     text = text.split('\n')
     for i in range(1, len(text)):
         text[i] = text[i].split(' ')
     if len(text) < 2:
+        # return an empty string if text holds no valid content
         return ''
+    # only return the number of logs specified by the first line of text
     return text[1:int(text[0])+1]
 
 
-def fillStudents(data: str):
+def fillStudents(data: str) -> dict[int, dict]:
+    """Fills a dictionary with the given data
+    Creates a data structure:\n 
+    students = {studentsID: {lowestPageID: None, latestPageID: None, totalScore: 0, scoresSubmitted: 0, averageScore: 0}}.
+    \nThen uses the log data to fill in info for each student
+    """
+    students: dict[int, dict] = {}
     for log in data:
         studentID: int = int(log[0])
-        actionCode = log[1]
+        actionCode: str = log[1]
+        # setup new student
         if not studentID in students:
             students[studentID] = {'lowestPageID': None,
                                    'latestPageID': None, 'totalScore': 0, 'scoresSubmitted': 0, 'averageScore': 0}
@@ -32,15 +42,20 @@ def fillStudents(data: str):
             case 'P':
                 actionCode == 'P'
                 pageID: int = int(log[2])
-                setLowestPageID(studentID, pageID)
-                setLatestPageID(studentID, pageID)
+                setLowestPageID(students, studentID, pageID)
+                setLatestPageID(students, studentID, pageID)
             case 'S':
                 actionCode == 'S'
                 score: int = int(log[2])
-                setScore(studentID, score)
+                setScore(students, studentID, score)
+    return students
 
 
-def setLowestPageID(studentID: int, pageID: int):
+def setLowestPageID(students: dict[int, dict], studentID: int, pageID: int):
+    """
+    Sets the lowest pageID for a given student.
+    If the student is missing a lowest pageID it is filled with the parameter
+    """
     if students[studentID]['lowestPageID']:
         if pageID < students[studentID]['lowestPageID']:
             students[studentID]['lowestPageID'] = pageID
@@ -48,18 +63,22 @@ def setLowestPageID(studentID: int, pageID: int):
     students[studentID]['lowestPageID'] = pageID
 
 
-def setLatestPageID(studentID: int, pageID: int):
+def setLatestPageID(students: dict[int, dict], studentID: int, pageID: int):
+    """Sets the latest pageID to the parameter"""
     students[studentID]['latestPageID'] = pageID
 
 
-def setScore(studentID: int, score: int):
+def setScore(students: dict[int, dict], studentID: int, score: int):
+    """Sets the totalScore and increases the amount of scores submitted"""
     students[studentID]['totalScore'] += score
     if not students[studentID]['scoresSubmitted']:
         students[studentID]['scoresSubmitted'] = 0
     students[studentID]['scoresSubmitted'] += 1
 
 
-def sortStudents():
+def sortStudents(students: dict[int, dict]) -> list[int]:
+    """Sorts the students in ascending order by their lowestPageID, latestPageID, and then by their averageScore.
+    \n Excluding any students missing pages and/or scores."""
     for student in list(students):
         lowestPageID = students[student]['lowestPageID']
         totalScore = students[student]['totalScore']
@@ -73,7 +92,8 @@ def sortStudents():
     return sortedStudents
 
 
-def printStudents(sortedStudents: List[int]):
+def printStudents(students, sortedStudents: List[int]):
+    """Prints the students by using the id's from the sortedStudents list"""
     for student in sortedStudents:
         lowestPageID = students[student]['lowestPageID']
         latestPageID = students[student]['latestPageID']
@@ -85,9 +105,9 @@ def main():
     file: str = input()
     text: str = openFile(file)
     logs: str = parseLogs(text)
-    fillStudents(logs)
-    sortedStudents = sortStudents()
-    printStudents(sortedStudents)
+    students = fillStudents(logs)
+    sortedStudents = sortStudents(students)
+    printStudents(students, sortedStudents)
 
 
 if __name__ == "__main__":
