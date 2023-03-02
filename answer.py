@@ -64,7 +64,9 @@ def setScore(studentID: int, score: int):
 
 
 def printStudents():
-    for student in students.keys():
+    sortedStudents = list(students.keys())
+    sortedStudents.sort(reverse=True)
+    for student in sortedStudents:
         lowestPageID = students[student]['lowestPageID']
         latestPageID = students[student]['latestPageID']
         totalScore = students[student]['totalScore']
