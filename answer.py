@@ -1,7 +1,7 @@
 
 from typing import List
 
-students: dict = {}
+students: dict[int, dict] = {}
 
 
 def openFile(filename: str) -> str:
@@ -11,9 +11,13 @@ def openFile(filename: str) -> str:
 
 
 def parseText(text: str):
+    if not text:
+        return ''
     text = text.split('\n')
     for i in range(1, len(text)):
         text[i] = text[i].split(' ')
+    if len(text) < 2:
+        return ''
     return text[1:int(text[0])+1]
 
 
@@ -33,13 +37,10 @@ def fillStudents(data: str):
             case 'S':
                 actionCode == 'S'
                 score: int = int(log[2])
-                students[studentID]['totalScore'] += score
-                if not students[studentID]['scoresSubmitted']:
-                    students[studentID]['scoresSubmitted'] = 0
-                students[studentID]['scoresSubmitted'] += 1
+                setScore(studentID, score)
 
 
-def setLowestPageID(studentID: int, pageID: str):
+def setLowestPageID(studentID: int, pageID: int):
     if students[studentID]['lowestPageID']:
         if pageID < students[studentID]['lowestPageID']:
             students[studentID]['lowestPageID'] = pageID
@@ -47,12 +48,19 @@ def setLowestPageID(studentID: int, pageID: str):
     students[studentID]['lowestPageID'] = pageID
 
 
-def setLatestPageID(studentID: int, pageID: str):
+def setLatestPageID(studentID: int, pageID: int):
     if students[studentID]['latestPageID']:
         if pageID > students[studentID]['latestPageID']:
             students[studentID]['latestPageID'] = pageID
         return
     students[studentID]['latestPageID'] = pageID
+
+
+def setScore(studentID: int, score: int):
+    students[studentID]['totalScore'] += score
+    if not students[studentID]['scoresSubmitted']:
+        students[studentID]['scoresSubmitted'] = 0
+    students[studentID]['scoresSubmitted'] += 1
 
 
 def printStudents():
@@ -71,8 +79,6 @@ def printStudents():
 def main():
     file: str = input()
     text: str = openFile(file)
-    if not text:
-        return
     text = parseText(text)
     fillStudents(text)
     printStudents()
