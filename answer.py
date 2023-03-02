@@ -74,7 +74,6 @@ def main():
     if not text:
         return
     text = parseText(text)
-    print(text)
     fillStudents(text)
     printStudents()
 
