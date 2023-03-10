@@ -1,13 +1,13 @@
 """
 AVL Tree implementation
 CISC320 Algorithms Spring 2023
-1. Line #68: is None -> 
+1. Line #70: is None -> 
 2. Line #26: int = 3 -> int = 0
 3. Line #97: root.right = self._insert_at(root.right, new) -> root.left = self._insert_at(root.left, new)
-4. Line #:
-5. Line #:
-6. Line #:
-7. Line #:
+4. Line #160: local_root.right = left_right_grandchild -> local_root.left = left_right_grandchild
+5. Line #144: changed 2 + to 1 + 
+6. Line #145: changed 2 + to 1 + 
+7. Line #176: changed min() to max()
 """
 
 
@@ -140,8 +140,9 @@ class AVLTree:
         local_root.right = right_left_grandchild
 
         # Update heights
-        local_root.height = 2 + self._get_max_height_of_children(local_root)
-        right_child.height = 2 + self._get_max_height_of_children(right_child)
+        # These should both only be 1 not increasing height by 2. I found this while looking at a bug in the _right_rotate
+        local_root.height = 1 + self._get_max_height_of_children(local_root)
+        right_child.height = 1 + self._get_max_height_of_children(right_child)
 
         # Return the new root
         return right_child
@@ -156,7 +157,8 @@ class AVLTree:
 
         # Perform rotation
         left_child.right = local_root
-        local_root.right = left_right_grandchild
+        # This is a bug as to rotate the local root's left node should change not its right, I found this because I knew something was wrong with the balancing when I was debugging
+        local_root.left = left_right_grandchild
 
         # Update heights
         local_root.height = 1 + self._get_max_height_of_children(local_root)
@@ -171,7 +173,8 @@ class AVLTree:
         """
         left_height: int = self._get_height(local_root.left)
         right_height: int = self._get_height(local_root.right)
-        return min(left_height, right_height)
+        # I saw this just while scrolling by, if we are trying to get the max we shouldn't be using min()
+        return max(left_height, right_height)
 
     def _get_height(self, local_root: TreeNode) -> int:
         """
@@ -179,7 +182,7 @@ class AVLTree:
         An empty tree has height 0.
         """
         # Handle empty node
-        if not local_root:
+        if local_root is None:
             return 0
 
         return local_root.height
