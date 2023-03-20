@@ -1,3 +1,5 @@
 # What does this program do?
 
-This is a standard avl tree written in python.
+Excercise to practice recursion
+
+Parses info and then follows tree like structure to uncover a password
