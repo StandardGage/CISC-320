@@ -23,11 +23,19 @@ def hash_words(words: str, hash_code: int, depth: int = 1):
             if(hash == 0):
                 return hash_word
 
+def hash_words_without_tools(words: str, hash_code: int, answer:str = "", depth: int = 1):
+    if depth == 0:
+        return answer
+    for word in words:
+        if simple_hash(word, hash_code) == 0:
+            answer = word
+            return answer
+
 
 def main():
     HASH_CODE = 81445731
     words = parse_dictionary('crack_tools\dictionary.txt')
-    answer = hash_words(words, HASH_CODE, 4)
+    answer = hash_words_without_tools(words, HASH_CODE, 4)
     print(answer)
 
 
