@@ -25,6 +25,17 @@ class TestFindOptimalSubset(unittest.TestCase):
         self.assertEqual(optimal_items, expected_optimal_items)
         self.assertEqual(total_value, expected_total_value)
 
+    def test_low_capacity(self):
+        items = [["item1", 5, 10], ["item2", 3, 8], ["item3", 4, 12]]
+        total_items = 3
+        capacity = 3
+        expected_optimal_items = [["item2", 3, 8]]
+        expected_total_value = 8
+        optimal_items, total_value = find_optimal_subset(
+            items, total_items, capacity)
+        self.assertEqual(optimal_items, expected_optimal_items)
+        self.assertEqual(total_value, expected_total_value)
+
     def test_zero_capacity(self):
         items = [["item1", 5, 10], ["item2", 3, 8], ["item3", 4, 12]]
         total_items = 3
