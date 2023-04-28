@@ -1,7 +1,7 @@
 
 def open_file():
     """Open file from input and return the contents of the file"""
-    file_name = input("Enter file name: ")
+    file_name = input()
     try:
         file = open(file_name, "r")
         return file.read()
@@ -9,20 +9,22 @@ def open_file():
         print("File not found")
         return None
 
+
 def parse_items(data):
     """Parse the data from the file and return the items in a manageable format"""
     lines = data.split("\n")
     lines = [line.split() for line in lines]
-    
+
     total_items = int(lines[0][0])
     capacity = int(lines[1][0])
-    
+
     items = []
     for line in lines[2:]:
         if len(line) == 3:
             items.append([line[0], int(line[1]), int(line[2])])
 
     return total_items, capacity, items
+
 
 def find_optimal_subset(items, total_items, capacity):
     """
@@ -49,10 +51,12 @@ def find_optimal_subset(items, total_items, capacity):
             if item_weight <= current_capacity:
                 dp_table[item_index][current_capacity] = max(
                     dp_table[item_index - 1][current_capacity],
-                    dp_table[item_index - 1][current_capacity - item_weight] + item_value,
+                    dp_table[item_index - 1][current_capacity -
+                                             item_weight] + item_value,
                 )
             else:
-                dp_table[item_index][current_capacity] = dp_table[item_index - 1][current_capacity]
+                dp_table[item_index][current_capacity] = dp_table[item_index -
+                                                                  1][current_capacity]
 
     # Trace back the optimal solution using the dynamic programming table
     optimal_items = []
@@ -69,12 +73,15 @@ def find_optimal_subset(items, total_items, capacity):
     # Return the optimal items and the total value
     return optimal_items[::-1], total_value
 
+
 def main():
     data = open_file()
     total_items, capacity, items = parse_items(data)
-    optimal_items, total_value = find_optimal_subset(items, total_items, capacity)
+    optimal_items, total_value = find_optimal_subset(
+        items, total_items, capacity)
     [print(item[0]) for item in optimal_items]
     print(total_value)
+
 
 if __name__ == "__main__":
     main()
