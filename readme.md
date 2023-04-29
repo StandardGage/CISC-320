@@ -6,7 +6,7 @@ It consists of the following functions
 
 1. `parse_items(data)`: This function reads the input data, which consists of the total number of items, the knapsack's capacity, and the items' names, weights, and values. The function returns the total_items, capacity, and a list of the items themselves
 
-2. `find_optimal_subset(items, total_items, capacity): This function uses dynamic programming to find the optimal set of items that maximize the total value while staying within the weight capacity. It returns the optimal set of items and the total value of the selected items.
+2. `find_optimal_subset(items, total_items, capacity)`: This function uses dynamic programming to find the optimal set of items that maximize the total value while staying within the weight capacity. It returns the optimal set of items and the total value of the selected items.
 
 3. `main()`: This function reads the input file, calls the parse_items() function to process the input, and then calls the find_optimal_subset() function to find the optimal set of items. It prints the sorted list of items and the optimal set of items with their total value.
 
