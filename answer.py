@@ -1,7 +1,3 @@
-import numpy as np
-from itertools import permutations
-
-
 def open_file():
     """Open file from input and return the contents of the file"""
     file_name = input()
