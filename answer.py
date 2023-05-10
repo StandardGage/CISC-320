@@ -1,3 +1,6 @@
+import numpy as np
+from itertools import permutations
+
 
 def open_file():
     """Open file from input and return the contents of the file"""
@@ -13,74 +16,45 @@ def open_file():
 def parse_items(data):
     """Parse the data from the file and return the items in a manageable format"""
     lines = data.split("\n")
-    lines = [line.split() for line in lines]
-
-    total_items = int(lines[0][0])
-    capacity = int(lines[1][0])
-
-    items = []
-    for line in lines[2:]:
-        if len(line) == 3:
-            items.append([line[0], int(line[1]), int(line[2])])
-
-    return total_items, capacity, items
+    lines = [[int(i) for i in line.split()] for line in lines]
+    return lines
 
 
-def find_optimal_subset(items, total_items, capacity):
-    """
-    Finds the optimal subset of items to include in a knapsack, given their weights, values, and the total capacity.
+def approx_tsp(matrix):
+    cost = 0
+    n = len(matrix[0])
+    farthest = find_farthest_vert(matrix)
+    visited = [farthest]
+    for i in range(n):
+        next_visit = find_cheapest_vert(matrix[visited[-1]], visited)
+        print(visited[-1])
+        cost += matrix[visited[-1]][next_visit]
+        visited.append(next_visit)
+    print(cost)
 
-    This function uses dynamic programming to solve the 0/1 knapsack problem.
 
-    Args:
-        items (list): A list of items, where each item is represented as a list containing the item's name (str),
-                      weight (int), and value (int).
-        total_items (int): The total number of items available for selection.
-        capacity (int): The maximum weight capacity of the knapsack.
+def find_cheapest_vert(vertex: list, ignore=[]):
+    cost = max(vertex)
+    for i in range(len(vertex)):
+        if i in ignore:
+            continue
+        if vertex[i] != 0 and vertex[i] < cost:
+            cost = vertex[i]
+    return vertex.index(cost)
 
-    Returns:
-        list: A list containing the optimal subset of items (list) and the total value of the selected items (int).
-    """
-    # Initialize the dynamic programming table
-    dp_table = [[0] * (capacity + 1) for _ in range(total_items + 1)]
 
-    # Fill in the dynamic programming table
-    for item_index in range(1, total_items + 1):
-        item_name, item_weight, item_value = items[item_index - 1]
-        for current_capacity in range(1, capacity + 1):
-            if item_weight <= current_capacity:
-                dp_table[item_index][current_capacity] = max(
-                    dp_table[item_index - 1][current_capacity],
-                    dp_table[item_index - 1][current_capacity -
-                                             item_weight] + item_value,
-                )
-            else:
-                dp_table[item_index][current_capacity] = dp_table[item_index -
-                                                                  1][current_capacity]
-
-    # Trace back the optimal solution using the dynamic programming table
-    optimal_items = []
-    item_index, current_capacity = total_items, capacity
-    while item_index > 0 and current_capacity > 0:
-        if dp_table[item_index][current_capacity] != dp_table[item_index - 1][current_capacity]:
-            optimal_items.append(items[item_index - 1])
-            current_capacity -= items[item_index - 1][1]
-        item_index -= 1
-
-    # Calculate the total value of the selected items
-    total_value = sum([item[2] for item in optimal_items])
-
-    # Return the optimal items and the total value
-    return optimal_items[::-1], total_value
+def find_farthest_vert(matrix):
+    farthest = 0
+    for i in range(len(matrix)):
+        if sum(matrix[i]) > sum(matrix[farthest]):
+            farthest = i
+    return farthest
 
 
 def main():
     data = open_file()
-    total_items, capacity, items = parse_items(data)
-    optimal_items, total_value = find_optimal_subset(
-        items, total_items, capacity)
-    [print(item[0]) for item in optimal_items]
-    print(total_value)
+    matrix = parse_items(data)
+    approx_tsp(matrix)
 
 
 if __name__ == "__main__":
