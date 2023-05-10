@@ -26,17 +26,21 @@ def approx_tsp(matrix):
         print(visited[-1])
         cost += matrix[visited[-1]][next_visit]
         visited.append(next_visit)
+    cost += matrix[farthest][visited[-1]]
     print(cost)
 
 
-def find_cheapest_vert(vertex: list, ignore=[]):
+def find_cheapest_vert(vertex: list, ignore):
     cost = max(vertex)
+    index = vertex.index(0)
     for i in range(len(vertex)):
         if i in ignore:
             continue
-        if vertex[i] != 0 and vertex[i] < cost:
+        if vertex[i] != 0 and vertex[i] <= cost:
             cost = vertex[i]
-    return vertex.index(cost)
+            index = i
+
+    return index
 
 
 def find_farthest_vert(matrix):
