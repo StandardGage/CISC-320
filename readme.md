@@ -1,33 +1,28 @@
-# What does this program do?
+## Overview
 
-This program is meant to solve the knapsack problem, which aims to find the optimal set of items to include in a knapsack with a limited weight capacity. Each item has a specific weight and value, and the objective is to maximize the total value of the selected items without exceeding the knapsack`s weight capacity.
+This Python program is a solution for finding an approximate solution to the Traveling Salesman Problem (TSP), a classic computer science problem. Given a list of cities and the distances between each pair of cities, the TSP seeks the shortest possible route that visits each city exactly once and returns to the origin city.
 
-It consists of the following functions
+The program takes a text file as input, which contains a square matrix representing the distances between cities. Each line in the file represents a city, and each number on the line represents the distance to another city. 
 
-1. `parse_items(data)`: This function reads the input data, which consists of the total number of items, the knapsack's capacity, and the items' names, weights, and values. The function returns the total_items, capacity, and a list of the items themselves
+The program implements two strategies for solving the problem: the "cheap" method and the "cheap and far" method. The program then finds the optimal path from these two strategies
 
-2. `find_optimal_subset(items, total_items, capacity)`: This function uses dynamic programming to find the optimal set of items that maximize the total value while staying within the weight capacity. It returns the optimal set of items and the total value of the selected items.
+- The "cheap" method always moves to the nearest unvisited city.
+- The "cheap and far" method alternates between moving to the nearest unvisited city and the unvisited city that is farthest from all other cities.
 
-3. `main()`: This function reads the input file, calls the parse_items() function to process the input, and then calls the find_optimal_subset() function to find the optimal set of items. It prints the sorted list of items and the optimal set of items with their total value.
+The main function opens the input file, parses the data, applies both methods to find an approximate solution, and prints the path with the lower cost.
 
-# What is the time complexity?
+## Function Descriptions
 
-The function which dominates that the overall program's time complexity will be is the `find_optimal_subset` function. Therefore, we will focus on that. The function is O(nW) where n is the total_items and W is the capacity. This is because the function uses dynamic programming to solve the knapsack problem, and it iterates through all the items and all possible capacities from 1 to the given capacity.
+- `open_file()`: This function prompts the user to input a filename. It then tries to open the file and read its contents. If the file does not exist, it prints an error message and returns None.
 
-The nested loops in the function are what contribute to this time complexity
+- `parse_items(data)`: This function takes the data from the file and parses it into a 2D list (matrix) of integers, which is used to represent the distances between cities.
 
-- The outer loop iterates through each item, resulting in O(total_items) complexity.
+- `approx_tsp_cheap(matrix)` and `approx_tsp_cheap_and_far(matrix)`: These functions implement the two strategies for solving the TSP. They start from a vertex, then find the next vertex to visit and add its distance to the total cost. The process is repeated until all vertices have been visited. The functions return the path and its total cost.
 
-- The inner loop iterates through each capacity value from 1 to the given capacity, resulting in O(capacity) complexity.
+- `find_cheapest_vert(vertex, ignore)` and `find_farthest_vert(matrix, ignore)`: These helper functions are used to find the next vertex to visit. They ignore vertices that have already been visited.
 
-Since these loops are nested, their complexities are multiplied, giving the overall time complexity of O(total_items \* capacity) or O(nW).
+- `main()`: This is the main function of the program. It opens the file, parses the data, applies the two methods to find an approximate solution, compares the costs, and prints the cheaper path.
 
-# What is the worst case scenario?
+To run the program, call the `main()` function. It will prompt you to enter the name of the file containing the matrix of distances. The program will then print the solution to the console.
 
-In the worst-case scenario, the program's time complexity is still dominated by the `find_optimal_subset` function, as it has the highest time complexity among all functions in the program.
-
-As previously mentioned, the time complexity of the `find_optimal_subset` function is O(total_items \* capacity) or O(nW) due to the nested loops iterating through all items and all possible capacities from 1 to the given capacity.
-
-# What is the space complexity?
-
-The program's space complexity is also dominated by the `find_optimal_subset` function, as it creates a dynamic programming table of dimensions (total_items + 1) x (capacity + 1). Therefore, the worst-case space complexity of the program is once again O(total_items \* capacity) or O(nW).
+Please note that this program provides an approximate solution to the TSP, not the optimal solution. The methods used here are heuristic and aim to find a good solution quickly, rather than the best possible solution.
