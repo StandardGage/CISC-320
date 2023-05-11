@@ -19,29 +19,15 @@ def parse_items(data):
 def approx_tsp(matrix):
 
     n = len(matrix[0])
-    paths = []
-    costs = []
-    for j in range(n):
-        cost = 0
-        visited = [j]
-        for i in range(int(n/2)):
-            next_visit = find_cheapest_vert(matrix[visited[-1]], visited)
-            cost += matrix[visited[-1]][next_visit]
-            visited.append(next_visit)
-
-            next_visit = find_farthest_vert(matrix, visited)
-            if next_visit == None:
-                continue
-            cost += matrix[visited[-1]][next_visit]
-            visited.append(next_visit)
-        paths.append(visited)
-
-        cost += matrix[visited[0]][visited[-1]]
-        costs.append(cost)
-    min_cost = min(costs)
-    min_path = paths[costs.index(min_cost)]
-    [print(vert) for vert in min_path]
-    print(min_cost)
+    farthest = find_farthest_vert(matrix)
+    visited = [farthest]
+    for i in range(n):
+        next_visit = find_cheapest_vert(matrix[visited[-1]], visited)
+        print(visited[-1])
+        cost += matrix[visited[-1]][next_visit]
+        visited.append(next_visit)
+    cost += matrix[farthest][visited[-1]]
+    print(cost)
 
 
 def find_cheapest_vert(vertex: list, ignore):
@@ -53,16 +39,13 @@ def find_cheapest_vert(vertex: list, ignore):
         if vertex[i] != 0 and vertex[i] <= cost:
             cost = vertex[i]
             index = i
+
     return index
 
 
-def find_farthest_vert(matrix, ignore):
-    farthest = None
+def find_farthest_vert(matrix):
+    farthest = 0
     for i in range(len(matrix)):
-        if i in ignore:
-            continue
-        if farthest is None:
-            farthest = i
         if sum(matrix[i]) > sum(matrix[farthest]):
             farthest = i
     return farthest
